@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<!-- 이 객체를 생성할 때 sqlSession 객체를 인자로 넘겨 생성하세요
+		     의존성 주입 중에서 생성자를 통한 의존성 주입이다.
+		 -->
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+	
+	<!-- 위에 인자로 넘긴 sqlSession도 마찬가지로 bean으로 등록 해줘야한다. -->
+	<!-- sqlSession은 sqlSessionFactory로 생성해야한다. -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!--  이 객체를 생성하고 setter를 통해 값을 넣어 주라는 의미 -->
+		<!--  의존성 주입 중에 setter를 통한 의존성 주입 -->
+		<!--  속성의 이름 곧 클래스의 필드  -->
+		<!-- 첫 번째 속성의 값은 마이바티스 설정 파일의 경로를 지정해준다 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	
+	<!--  dataSource 객체도 bean으로 등록해야 sqlSessionFactory 객체 생성 시 넘겨줄 수 있다. -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE"/>
+		<property name="username" value="EMFLY"/>
+		<property name="password" value="EMFLY"/>
+		<property name="defaultAutoCommit" value="false"/>
+	</bean>
+	
+	
+	<!-- json관련  -->
+<!-- 	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+<property name="contentType" value="application/json;charset=UTF-8"> </property>
+</bean> --> 
+
+
+
+<!-- 	<context:property-placeholder location="classpath:/application.properties" />
+
+<bean id = "connectionFactoryLocator" class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+  <property name = "connectionFactories">
+    <bean class = "org.springframework.social.facebook.connect.FacebookConnectionFactory">
+      <constructor-arg value = "${spring.social.facebook.appId}"/>
+      <constructor-arg value = "${spring.social.facebook.appSecret}"/>
+
+    </bean>
+  </property>
+</bean>
+<bean id = "inMemoryConnectionRepository" class = "org.springframework.social.connect.mem.InMemoryConnectionRepository">
+  <constructor-arg ref=  "connectionFactoryLocator"/>
+</bean>
+	 -->
+	 <!-- facebook -->
+	<!-- <bean id="connectionFactory"
+        class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+        <constructor-arg value="539927120168408" />
+        <constructor-arg value="e3b92a6394a54bf810497c360572a24c" />
+    </bean>
+ 
+    <bean id="oAuth2Parameters"
+        class="org.springframework.social.oauth2.OAuth2Parameters">
+        <property name="scope" value="email" />
+        <property name="redirectUri" value="https://localhost:8989/Path..." />
+    </bean> -->
+</beans>

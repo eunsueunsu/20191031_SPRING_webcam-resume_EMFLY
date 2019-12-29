@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="Keyword">
+	<!-- namespace sqlsession에서 찾아올때 쓰는 경로 -->
+
+
+	<!-- type 은 alias지정해준 것 -->
+	<resultMap id="PassKeyResultSet" type="Keyword">
+		<id column="PID" property="kID" />
+		<result column="PKEYWORD" property="keyword" />
+	
+
+	</resultMap>
+	
+	<select id="getKeywordList" resultMap="PassKeyResultSet" parameterType="Keyword">
+	select *
+	from PASSKEY
+	</select>
+	</mapper>

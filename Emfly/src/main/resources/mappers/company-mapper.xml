@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Company">
+   <resultMap id="hireResultSet" type="Hire">
+      <id column="HNO" property="hNo" />
+      <result column="HCOMPANY" property="hCompany" />
+      <result column="HMIN" property="hMin" />
+      <result column="HMAX" property="hMax" />
+      <result column="HSTARTDATE" property="hStartdate" />
+      <result column="HENDDATE" property="hEnddate" />
+      <result column="HURL" property="hUrl" />
+      <result column="HJOBCODE" property="hJobcode" />
+   </resultMap>
+
+   <resultMap id="thireResultSet" type="THire">
+      <id column="THNO" property="tHNo" />
+      <result column="THCOMPANY" property="tHCompany" />
+   </resultMap>
+
+   <resultMap id="companyResultSet" type="Company">
+      <id column="CID" property="cId" />
+      <result column="CNAME" property="cName" />
+      <result column="CDIV" property="cDiv" />
+      <result column="CLOCATION" property="cLocation" />
+      <result column="CSECTOR" property="cSector" />
+      <result column="CSALARY" property="cSalary" />
+      <result column="CINFO" property="cInfo" />
+      <result column="CPERSON" property="cPerson" />
+      <result column="CSALES" property="cSales" />
+      <result column="CCAPITAL" property="cCapital" />
+      <result column="CLEADER" property="cLeader" />
+      <result column="CURL" property="cUrl" />
+   </resultMap>
+
+   <select id="listHire" resultMap="hireResultSet">
+      SELECT * FROM HIRE
+   </select>
+
+   <select id="listTHire" resultMap="thireResultSet">
+      SELECT * FROM THIRE
+   </select>
+
+   <select id="selecthMin" parameterType="string"
+      resultType="string">
+      SELECT HMIN FROM HIRE WHERE HNO = #{hNo}
+   </select>
+
+   <select id="selecthMax" parameterType="string"
+      resultType="string">
+      SELECT HMAX FROM HIRE WHERE HNO = #{hNo}
+   </select>
+
+   <insert id="insertCompany" parameterType="Company">
+      INSERT INTO COMPANY
+      VALUES(#{cId}, #{cName}, #{cDiv,jdbcType=VARCHAR}, #{cLocation}, #{cSector},
+      #{cSalary},
+      #{cInfo}, #{cPerson}, #{cSales}, #{cCapital}, #{cLeader},
+      #{cUrl})
+   </insert>
+
+   <select id="listAll" resultMap="companyResultSet">
+      <include refid="pagingHeader" />
+      select * from company
+      <include refid="search" />
+      <include refid="check" />
+      <include refid="pagingFooter" />
+   </select>
+
+   <select id="getListCount" resultType="_int">
+      select count(*)
+      from company
+      <include refid="search" />
+   </select>
+
+   <select id="selectCompany" resultMap="companyResultSet">
+      select * from company where
+      cId = #{cId}
+   </select>
+
+   <sql id="pagingHeader">
+      select *
+      from (
+      select rownum as rn, A.*
+      from (
+   </sql>
+
+   <sql id="pagingFooter">
+      ) A
+      ) where rn between #{start} and #{end}
+   </sql>
+
+   <sql id="search">
+      where cName like '%'|| #{searchWord} ||'%'
+   </sql>
+
+   <sql id="check">
+      and cDiv like '%'|| #{checkboxValues} ||'%'
+   </sql>
+</mapper>

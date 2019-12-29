@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- XML 문서의 유효성 체크를 위해 필요한 부분 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ResumeMapper">
+	<!-- 여기 오면 일단 결과를 돌려받을 resultMap부터 생성 -->
+	<resultMap id="ResumeResultSet" type="Resume">
+		<id column="REID" property="reId" />
+		<result column="RNAME" property="rName" />
+		<result column="REBIRTH" property="reBirth" />
+		<result column="REGENDER" property="reGender" />
+		<result column="REEMAIL" property="reEmail" />
+		<result column="REPHONE" property="rePhone" />
+		<result column="READDRESS" property="reAddress" />
+		<result column="RESCHOOL" property="reSchool" />
+		<result column="RESCNAME" property="reScname" />
+		<result column="RESDATE" property="reSdate" />
+		<result column="REEDATE" property="reEdate" />
+		<result column="REGRADUATE" property="reGraduate" />
+		<result column="REMAJOR" property="reMajor" />
+		<result column="REGPOINT" property="reGpoint" />
+		<result column="RETPOINT" property="reTpoint" />
+		<result column="RECOMNAME" property="reComName" />
+		<result column="REDIVNAME" property="reDivName" />
+		<result column="RERANK" property="reRank" />
+		<result column="REYEAR" property="reYear" />
+		<result column="REWORKINFO" property="reWorkInfo" />
+		<result column="REEMPLOY" property="reEmploy" />
+		<result column="REEMDIV" property="reEmDiv" />
+		<result column="RELOCATION" property="reLocation" />
+		<result column="RESALARY" property="reSalary" />
+		<result column="RESTATUS" property="reStatus" />
+		<result column="REDATE" property="reDate" />
+	</resultMap>
+	
+	<insert id="resumeInsert" parameterType="Resume">
+ 		insert into resume
+ 		values(reId.nextval,#{rName},#{reBirth},#{reGender},#{reEmail},#{rePhone},#{reAddress},
+ 		#{reSchool},#{reScname},#{reSdate},#{reEdate},#{reGraduate},#{reMajor},#{reGpoint},#{reTpoint},
+ 		#{reComName},#{reDivName},#{reRank},#{reYear},#{reWorkInfo},#{reEmploy},#{reEmDiv},#{reLocation},#{reSalary},#{reStatus},sysdate)
+ 	</insert>
+ 	
+ 	<select id="listAll" resultMap="ResumeResultSet">
+		<include refid="pagingHeader"/>
+ 		select * from resume where restatus = 1
+ 		<include refid="check"/>
+ 		<include refid="pagingFooter"/>
+ 	</select>
+
+	<select id="getListCount" resultType="_int">
+ 		select count(*)
+ 		from resume
+ 	</select>
+ 	
+ 	<select id="selectResume" resultMap="ResumeResultSet">
+      select * from resume where
+      reId = #{reId}
+   </select>
+ 	
+ 	<sql id="pagingHeader">
+ 		 select *
+        from (
+            select rownum as rn, A.*
+            from ( 
+ 	</sql>
+ 	
+ 	<sql id="pagingFooter">
+ 		     ) A
+        ) where rn between #{start} and #{end}
+ 	</sql>
+ 	
+ 	<sql id="check">
+ 		
+ 	</sql>
+</mapper>  
